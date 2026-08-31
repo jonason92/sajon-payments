@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Lock, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Lock, ArrowRight, ArrowUpRight, CreditCard, BookOpen, Download, Smartphone, ShieldCheck } from 'lucide-react'
 import { STRIPE_LINKS } from '@/lib/stripe'
 import { trpc } from '@/providers/trpc'
 
@@ -517,6 +517,192 @@ function PricingTeaser() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Section 5b — So funktioniert es (praktischer Ablauf)                */
+/* ------------------------------------------------------------------ */
+const STEPS = [
+  {
+    num: '1.',
+    icon: BookOpen,
+    title: 'Titel wählen',
+    text: 'Stöbern Sie im Katalog: Leseproben sind frei, Premium-Inhalte erkennen Sie am roten Badge. Jeder Titel zeigt Format, Umfang und Preis vor dem Kauf.',
+  },
+  {
+    num: '2.',
+    icon: CreditCard,
+    title: 'Sicher bezahlen',
+    text: 'Die Zahlung läuft über Stripe — Kreditkarte, TWINT oder Apple Pay. Diese Vorschau läuft im Testmodus: Testkarte 4242 4242 4242 4242, es wird nichts abgebucht.',
+  },
+  {
+    num: '3.',
+    icon: Download,
+    title: 'Sofort lesen',
+    text: 'Nach dem Kauf steht der Inhalt in Ihrem Konto bereit — im Online-Reader und als Download (EPUB & PDF, DRM-frei) für eReader, Tablet und Smartphone.',
+  },
+]
+
+const FORMAT_FACTS = [
+  { icon: Smartphone, label: 'Lesegeräte', value: 'eReader, Tablet, Smartphone, Desktop' },
+  { icon: Download, label: 'Formate', value: 'EPUB 3 · PDF · Online-Reader' },
+  { icon: ShieldCheck, label: 'Kopierschutz', value: 'DRM-frei — Ihre Datei, für immer' },
+]
+
+function Ablauf() {
+  const ref = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        '.js-step',
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: EASE,
+          scrollTrigger: { trigger: ref.current, start: 'top 75%' },
+        },
+      )
+    },
+    { scope: ref },
+  )
+
+  return (
+    <section ref={ref} className="border-t border-line px-6 py-[72px] lg:px-12 lg:py-32">
+      <div className="mx-auto max-w-site">
+        <div className="mx-auto max-w-[900px] text-center">
+          <p className="kicker">So funktioniert es</p>
+          <h2 className="mt-6 font-display text-[28px] font-semibold leading-[1.1] text-ink lg:text-[40px]">
+            In drei Schritten zum Inhalt.
+          </h2>
+        </div>
+
+        <div className="mx-auto mt-16 grid max-w-[1000px] gap-10 md:grid-cols-3 md:gap-8">
+          {STEPS.map((step) => (
+            <div key={step.num} className="js-step">
+              <div className="flex items-center gap-4">
+                <step.icon className="h-5 w-5 text-cinnabar" />
+                <span className="h-px flex-1 bg-line" />
+                <span className="font-display text-lg italic text-cinnabar">{step.num}</span>
+              </div>
+              <h3 className="mt-6 font-display text-[24px] font-semibold text-ink">{step.title}</h3>
+              <p className="mt-3 font-body text-[15px] leading-relaxed text-ink-soft">{step.text}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Praktische Fakten: Formate & Geräte */}
+        <div className="js-step mx-auto mt-16 grid max-w-[1000px] border border-line md:grid-cols-3">
+          {FORMAT_FACTS.map((f, i) => (
+            <div
+              key={f.label}
+              className={`flex items-start gap-4 px-8 py-7 ${i > 0 ? 'border-t border-line md:border-l md:border-t-0' : ''}`}
+            >
+              <f.icon className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <div>
+                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-faint">
+                  {f.label}
+                </p>
+                <p className="mt-1.5 font-body text-[15px] font-semibold text-ink">{f.value}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Section 5c — Der Verlag                                             */
+/* ------------------------------------------------------------------ */
+const SPARTEN = [
+  'Sajon Publishing',
+  'Jonason Spiritual Science Bridge',
+  'sajonDocs',
+  'Sajon Bibliotheks- & Archivplattform',
+  'Sajon Lebende Bücher',
+]
+
+function Verlag() {
+  const ref = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        '.js-verlag-fade',
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: EASE,
+          scrollTrigger: { trigger: ref.current, start: 'top 75%' },
+        },
+      )
+    },
+    { scope: ref },
+  )
+
+  return (
+    <section ref={ref} className="bg-paper-deep px-6 py-[72px] lg:px-12 lg:py-32">
+      <div className="mx-auto grid max-w-site gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="js-verlag-fade">
+          <p className="kicker">Der Verlag</p>
+          <h2 className="mt-6 font-display text-[28px] font-semibold leading-[1.15] text-ink lg:text-[36px]">
+            Sajon Publishing — die Verlags-Sparte der Sajon GmbH.
+          </h2>
+          <p className="mt-6 font-body text-[17px] leading-relaxed text-ink-soft">
+            Sajon Publishing verbindet akademische Sorgfalt mit zeitgemäßem Buchdesign:
+            peer-reviewte Inhalte, handgesetzte Typografie und eine technische Pipeline,
+            die aus einem Manuskript jedes gewünschte Format erzeugt.
+          </p>
+          <address className="mt-8 border-l-2 border-cinnabar pl-6 font-body text-[15px] not-italic leading-relaxed text-ink-soft">
+            <strong className="font-semibold text-ink">Sajon GmbH</strong>
+            <br />
+            Sparte Sajon Publishing
+            <br />
+            Klösterlistutz 18A
+            <br />
+            3013 Bern
+          </address>
+        </div>
+
+        <div className="js-verlag-fade lg:pt-16">
+          <h3 className="font-sans text-xs font-semibold uppercase tracking-[0.22em] text-ink-faint">
+            Die Sparten der Sajon GmbH
+          </h3>
+          <ul className="mt-6 divide-y divide-line border-y border-line">
+            {SPARTEN.map((s, i) => (
+              <li key={s} className="flex items-baseline gap-5 py-4">
+                <span className="font-display text-sm italic text-cinnabar">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span
+                  className={`font-body text-[16px] ${i === 0 ? 'font-semibold text-ink' : 'text-ink-soft'}`}
+                >
+                  {s}
+                  {i === 0 && (
+                    <span className="ml-3 font-sans text-[10px] font-semibold uppercase tracking-[0.15em] text-gold">
+                      Diese Website
+                    </span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 font-sans text-[13px] leading-relaxed text-ink-faint">
+            Fragen zu Titeln, Lizenzen oder Zusammenarbeit? Schreiben Sie uns —
+            wir antworten in der Regel innerhalb von zwei Werktagen.
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /* Section 6 — Verlagszitat                                            */
 /* ------------------------------------------------------------------ */
 const QUOTE =
@@ -576,7 +762,9 @@ export default function Home() {
       <Programm />
       <Katalog />
       <PaywallDemo />
+      <Ablauf />
       <PricingTeaser />
+      <Verlag />
       <Verlagszitat />
     </>
   )

@@ -392,7 +392,19 @@ const FAQ = [
   },
   {
     q: 'Gibt es Ermäßigungen für Studierende?',
-    a: 'Ja. Studierende und Doktorierende erhalten auf Anfrage 30 % Ermäßigung auf beide Abos. Schreiben Sie uns mit einem Immatrikulationsnachweis an verlag@sajon.example.',
+    a: 'Ja. Studierende und Doktorierende erhalten auf Anfrage 30 % Ermäßigung auf beide Abos. Schreiben Sie uns mit einem Immatrikulationsnachweis — die Kontaktdaten finden Sie im Impressum unten auf der Seite.',
+  },
+  {
+    q: 'Kann ich vom Kauf zurücktreten?',
+    a: 'Digitale Inhalte werden sofort geliefert. Mit dem Kauf bestätigen Sie, dass Sie auf das 14-tägige Widerrufsrecht verzichten, sobald der Download oder die Freischaltung beginnt. Bei technischen Problemen finden wir immer eine Lösung — schreiben Sie uns einfach.',
+  },
+  {
+    q: 'Erhalte ich eine Rechnung?',
+    a: 'Ja. Nach jedem Kauf stellt Stripe automatisch eine Zahlungsbestätigung per E-Mail aus. Abos können Sie jederzeit über den Link in dieser E-Mail verwalten oder kündigen.',
+  },
+  {
+    q: 'Was bedeutet „Testmodus“ auf dieser Website?',
+    a: 'Diese Website läuft derzeit mit Stripe im Testmodus: Alle Zahlungen sind Simulationen, es wird kein echtes Geld abgebucht. Zum Ausprobieren nutzen Sie die Testkarte 4242 4242 4242 4242 mit beliebigem Datum und CVC.',
   },
 ]
 
