@@ -5,6 +5,8 @@ import ArticleHard from './pages/ArticleHard'
 import ArticleMetered from './pages/ArticleMetered'
 import Leseprobe from './pages/Leseprobe'
 import Abo from './pages/Abo'
+import Login from "./pages/Login"
+import NotFound from "./pages/NotFound"
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
         <Route path="abo" element={<Abo />} />
         <Route path="*" element={<Home />} />
       </Route>
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
