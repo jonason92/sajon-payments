@@ -3,6 +3,8 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
+import { LOGIN_PATH } from '@/const'
 
 const NAV_LINKS = [
   { label: 'Katalog', to: '/' },
@@ -18,6 +20,50 @@ function TestmodeBadge() {
       <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-gold" />
       Stripe Testmodus
     </span>
+  )
+}
+
+function AccountArea() {
+  const { user, isLoading, logout } = useAuth()
+
+  if (isLoading) {
+    return <div className="h-9 w-24 animate-pulse bg-paper-deep" />
+  }
+
+  if (user) {
+    return (
+      <div className="flex items-center gap-4">
+        <Link
+          to="/konto"
+          className="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:text-cinnabar"
+        >
+          Mein Konto
+        </Link>
+        <button
+          type="button"
+          onClick={() => logout()}
+          className="cursor-pointer font-sans text-[11px] font-medium uppercase tracking-[0.1em] text-ink-faint transition-colors hover:text-cinnabar"
+        >
+          Abmelden
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Link
+        to={LOGIN_PATH}
+        className="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:text-cinnabar"
+      >
+        Anmelden
+      </Link>
+      <motion.div whileTap={{ scale: 0.97 }}>
+        <Link to="/abo" className="btn-primary !px-6 !py-3 text-xs">
+          Zugang wählen
+        </Link>
+      </motion.div>
+    </div>
   )
 }
 
@@ -83,14 +129,7 @@ export default function Navbar() {
           {/* Right: badge + CTA */}
           <div className="hidden items-center gap-5 lg:flex">
             <TestmodeBadge />
-            <motion.div whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/abo"
-                className="btn-primary !px-6 !py-3 text-xs"
-              >
-                Zugang wählen
-              </Link>
-            </motion.div>
+            <AccountArea />
           </div>
 
           {/* Mobile hamburger */}
