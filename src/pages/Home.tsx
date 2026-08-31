@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { Lock, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { STRIPE_LINKS } from '@/lib/stripe'
+import { trpc } from '@/providers/trpc'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -200,35 +201,13 @@ function Programm() {
 /* ------------------------------------------------------------------ */
 /* Section 3 — Ausgewählte Titel                                       */
 /* ------------------------------------------------------------------ */
-const TITLES = [
-  {
-    cover: '/cover-typographie.png',
-    title: 'Die Typografie der Wissenschaft',
-    meta: 'Dr. Elena Marbach · E-Book',
-    premium: true,
-    to: '/artikel/hard',
-  },
-  {
-    cover: '/cover-edition.png',
-    title: 'Akademische Editionen',
-    meta: 'Prof. J. R. Altherr · Edition',
-    premium: true,
-    to: '/artikel/hard',
-  },
-  {
-    cover: '/cover-leseprobe.png',
-    title: 'Leseproben & Essays',
-    meta: 'Sajon Redaktion · Essay-Band',
-    premium: false,
-    to: '/leseprobe',
-  },
-]
-
 function Katalog() {
   const ref = useRef<HTMLElement>(null)
+  const { data: titles, isLoading } = trpc.titles.list.useQuery()
 
   useGSAP(
     () => {
+      if (isLoading) return
       gsap.fromTo(
         '.js-catalog-card',
         { opacity: 0, y: 48 },
@@ -242,7 +221,7 @@ function Katalog() {
         },
       )
     },
-    { scope: ref },
+    { scope: ref, dependencies: [isLoading, titles] },
   )
 
   return (
@@ -253,34 +232,52 @@ function Katalog() {
           Neuerscheinungen
         </h2>
 
-        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {TITLES.map((t) => (
-            <Link key={t.title} to={t.to} className="js-catalog-card group block">
-              <div className="relative border border-line bg-paper-deep transition-all duration-500 ease-editorial group-hover:-translate-y-2 group-hover:shadow-editorial [perspective:1200px]">
-                <img
-                  src={t.cover}
-                  alt={`Cover: ${t.title}`}
-                  className="aspect-[2/3] w-full object-cover transition-transform duration-500 ease-editorial group-hover:[transform:rotateX(2deg)_rotateY(-3deg)]"
-                />
-                <span className="absolute right-4 top-4">
-                  {t.premium ? (
-                    <span className="badge-premium">
-                      <Lock className="h-3 w-3" /> Premium
-                    </span>
-                  ) : (
-                    <span className="badge-free bg-paper">Frei</span>
-                  )}
-                </span>
+        {isLoading ? (
+          <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="js-catalog-card block animate-pulse">
+                <div className="aspect-[2/3] w-full border border-line bg-paper-deep" />
+                <div className="mt-5 h-6 w-3/4 bg-paper-deep" />
+                <div className="mt-2 h-3 w-1/2 bg-paper-deep" />
               </div>
-              <h3 className="mt-5 font-display text-[22px] font-semibold text-ink transition-colors duration-300 group-hover:text-cinnabar">
-                {t.title}
-              </h3>
-              <p className="mt-1 font-sans text-xs uppercase tracking-[0.12em] text-ink-faint">
-                {t.meta}
-              </p>
-            </Link>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : !titles || titles.length === 0 ? (
+          <p className="mt-16 font-body text-[15px] italic leading-relaxed text-ink-soft">
+            Derzeit sind keine Neuerscheinungen im Katalog — schauen Sie bald wieder vorbei.
+          </p>
+        ) : (
+          <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {titles.map((t) => (
+              <Link key={t.slug} to={t.route} className="js-catalog-card group block">
+                <div className="relative border border-line bg-paper-deep transition-all duration-500 ease-editorial group-hover:-translate-y-2 group-hover:shadow-editorial [perspective:1200px]">
+                  {t.coverImage && (
+                    <img
+                      src={t.coverImage}
+                      alt={`Cover: ${t.title}`}
+                      className="aspect-[2/3] w-full object-cover transition-transform duration-500 ease-editorial group-hover:[transform:rotateX(2deg)_rotateY(-3deg)]"
+                    />
+                  )}
+                  <span className="absolute right-4 top-4">
+                    {t.premium ? (
+                      <span className="badge-premium">
+                        <Lock className="h-3 w-3" /> Premium
+                      </span>
+                    ) : (
+                      <span className="badge-free bg-paper">Frei</span>
+                    )}
+                  </span>
+                </div>
+                <h3 className="mt-5 font-display text-[22px] font-semibold text-ink transition-colors duration-300 group-hover:text-cinnabar">
+                  {t.title}
+                </h3>
+                <p className="mt-1 font-sans text-xs uppercase tracking-[0.12em] text-ink-faint">
+                  {t.author} · {t.type === 'ebook' ? 'E-Book' : t.type === 'artikel' ? 'Artikel' : 'Leseprobe'}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

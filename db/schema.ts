@@ -1,4 +1,5 @@
 import {
+  boolean,
   mysqlTable,
   mysqlEnum,
   serial,
@@ -38,3 +39,21 @@ export type InsertUser = typeof users.$inferInsert;
 //
 // Note: FK columns referencing a serial() PK must use:
 //   bigint("columnName", { mode: "number", unsigned: true }).notNull()
+
+export const titles = mysqlTable("titles", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 255 }).notNull(),
+  subtitle: varchar("subtitle", { length: 255 }),
+  type: mysqlEnum("type", ["ebook", "artikel", "leseprobe"]).notNull(),
+  premium: boolean("premium").notNull().default(false),
+  excerpt: text("excerpt"),
+  author: varchar("author", { length: 255 }).notNull(),
+  route: varchar("route", { length: 255 }).notNull(),
+  coverImage: varchar("coverImage", { length: 255 }),
+  publishedAt: timestamp("publishedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Title = typeof titles.$inferSelect;
+export type InsertTitle = typeof titles.$inferInsert;
