@@ -55,11 +55,9 @@
 }
 
 @layer components {
-  /* Subtle paper fibre overlay, applied globally */
+  /* Matter, ruhiger Hintergrund (keine sichtbare Textur) */
   .paper-texture {
-    background-image: url('/paper-texture.png');
-    background-size: 640px;
-    background-blend-mode: multiply;
+    background-image: none;
   }
 
   /* Eyebrow / kicker label */

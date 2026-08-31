@@ -50,7 +50,7 @@ module.exports = {
         },
         /* Sajon editorial palette */
         paper: "#F7F4EE",
-        "paper-deep": "#EFEAE0",
+        "paper-deep": "#F3F0E9",
         ink: "#1A1712",
         "ink-soft": "#4A4438",
         "ink-faint": "#8A8172",
