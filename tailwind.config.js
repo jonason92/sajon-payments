@@ -48,6 +48,22 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        /* Sajon editorial palette */
+        paper: "#F7F4EE",
+        "paper-deep": "#EFEAE0",
+        ink: "#1A1712",
+        "ink-soft": "#4A4438",
+        "ink-faint": "#8A8172",
+        cinnabar: "#8C2F1B",
+        "cinnabar-deep": "#6E2213",
+        gold: "#B08D3E",
+        line: "#D9D2C4",
+        locked: "#161310",
+      },
+      fontFamily: {
+        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        body: ['"Source Serif 4"', 'Georgia', 'serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",
@@ -58,6 +74,14 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        editorial: "0 24px 48px -24px rgb(26 23 18 / 0.25)",
+      },
+      maxWidth: {
+        article: "720px",
+        site: "1280px",
+      },
+      transitionTimingFunction: {
+        editorial: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       keyframes: {
         "accordion-down": {
@@ -72,11 +96,16 @@ module.exports = {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
+        "pulse-dot": {
+          "0%,100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: "0.4", transform: "scale(0.8)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        "pulse-dot": "pulse-dot 1.8s ease-in-out infinite",
       },
     },
   },
