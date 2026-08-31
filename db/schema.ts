@@ -3,6 +3,7 @@ import {
   mysqlTable,
   mysqlEnum,
   serial,
+  bigint,
   varchar,
   text,
   timestamp,
@@ -57,3 +58,18 @@ export const titles = mysqlTable("titles", {
 
 export type Title = typeof titles.$inferSelect;
 export type InsertTitle = typeof titles.$inferInsert;
+
+export const entitlements = mysqlTable("entitlements", {
+  id: serial("id").primaryKey(),
+  userId: bigint("user_id", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => users.id),
+  titleId: bigint("title_id", { mode: "number", unsigned: true })
+    .notNull()
+    .references(() => titles.id),
+  source: varchar("source", { length: 50 }).notNull().default("kauf"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Entitlement = typeof entitlements.$inferSelect;
+export type InsertEntitlement = typeof entitlements.$inferInsert;
