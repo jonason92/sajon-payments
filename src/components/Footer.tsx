@@ -13,15 +13,19 @@ export default function Footer() {
           <div>
             <span className="font-display text-2xl font-bold tracking-[0.3em] text-ink">SAJON</span>
             <p className="mt-1 font-sans text-[9px] font-medium uppercase tracking-[0.35em] text-ink-faint">
-              Publishing · Zürich
+              Publishing · Bern
             </p>
             <address className="mt-6 font-body text-[15px] not-italic leading-relaxed text-ink-soft">
-              Sajon Publishing GmbH
+              Sajon GmbH · Sajon Publishing
               <br />
-              Rämistrasse 12
+              Klösterlistutz 18A
               <br />
-              8001 Zürich
+              3013 Bern
             </address>
+            <p className="mt-4 font-sans text-[11px] leading-relaxed text-ink-faint">
+              Eine Sparte der Sajon GmbH — neben Jonason Spiritual Science Bridge, sajonDocs,
+              Sajon Bibliotheks- &amp; Archivplattform und Sajon Lebende Bücher.
+            </p>
           </div>
 
           {/* Navigation */}

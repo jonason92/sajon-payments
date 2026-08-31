@@ -55,7 +55,7 @@ export default function Navbar() {
           <Link to="/" className="flex flex-col leading-none">
             <span className="font-display text-2xl font-bold tracking-[0.3em] text-ink">SAJON</span>
             <span className="mt-1 font-sans text-[9px] font-medium uppercase tracking-[0.35em] text-ink-faint">
-              Publishing · Zürich
+              Publishing · Bern
             </span>
           </Link>
 
