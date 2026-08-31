@@ -7,6 +7,7 @@ import { createContext } from "./context";
 import { env } from "./lib/env";
 import { createOAuthCallbackHandler } from "./kimi/auth";
 import { Paths } from "@contracts/constants";
+import { handleStripeWebhook } from "./stripe-webhook";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
@@ -20,6 +21,7 @@ app.use("/api/trpc/*", async (c) => {
     createContext,
   });
 });
+app.post("/api/stripe/webhook", (c) => handleStripeWebhook(c.req.raw));
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 
 export default app;

@@ -1,5 +1,6 @@
 import {
   boolean,
+  int,
   mysqlTable,
   mysqlEnum,
   serial,
@@ -7,7 +8,6 @@ import {
   varchar,
   text,
   timestamp,
-  // bigint,
 } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
@@ -73,3 +73,20 @@ export const entitlements = mysqlTable("entitlements", {
 
 export type Entitlement = typeof entitlements.$inferSelect;
 export type InsertEntitlement = typeof entitlements.$inferInsert;
+
+export const purchases = mysqlTable("purchases", {
+  id: serial("id").primaryKey(),
+  userId: bigint("userId", { mode: "number", unsigned: true }),
+  email: varchar("email", { length: 320 }),
+  tier: mysqlEnum("tier", ["einmal", "monat", "jahr"]).notNull(),
+  stripeSessionId: varchar("stripeSessionId", { length: 255 }),
+  amount: int("amount"),
+  currency: varchar("currency", { length: 8 }).default("chf"),
+  status: mysqlEnum("status", ["bezahlt", "storniert", "erstattet"])
+    .default("bezahlt")
+    .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Purchase = typeof purchases.$inferSelect;
+export type InsertPurchase = typeof purchases.$inferInsert;

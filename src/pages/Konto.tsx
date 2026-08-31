@@ -8,6 +8,13 @@ import { BookOpen, CreditCard, Lock, Receipt, Sparkles } from 'lucide-react'
 const typeLabel = (type: string) =>
   type === 'ebook' ? 'E-Book' : type === 'artikel' ? 'Artikel' : 'Leseprobe'
 
+const tierLabel = (tier: string) =>
+  tier === 'einmal'
+    ? 'Einmalzugang'
+    : tier === 'monat'
+      ? 'Monats-Abo'
+      : 'Jahres-Abo'
+
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -20,6 +27,7 @@ export default function Konto() {
   const myTitles = trpc.account.myTitles.useQuery(undefined, { enabled: !!user })
   const overview = trpc.account.myOverview.useQuery(undefined, { enabled: !!user })
   const catalog = trpc.titles.list.useQuery(undefined, { enabled: !!user })
+  const purchases = trpc.purchases.mine.useQuery(undefined, { enabled: !!user })
 
   if (isLoading) {
     return (
@@ -146,16 +154,45 @@ export default function Konto() {
         <h2 className="flex items-center gap-3 border-b border-line pb-4 font-display text-2xl font-semibold text-ink">
           <Receipt className="h-5 w-5 text-cinnabar" /> Kaufhistorie
         </h2>
-        <div className="mt-8 border border-dashed border-line bg-paper-deep/40 px-8 py-10 text-center">
-          <Receipt className="mx-auto h-7 w-7 text-ink-faint" />
-          <p className="mt-4 font-display text-xl font-semibold text-ink">
-            Noch keine Käufe
-          </p>
-          <p className="mx-auto mt-2 max-w-md font-body text-[15px] leading-relaxed text-ink-soft">
-            Zahlungen laufen derzeit über Stripe im Testmodus. Ihre Belege
-            erscheinen hier, sobald die Anbindung abgeschlossen ist.
-          </p>
-        </div>
+        {purchases.isLoading ? (
+          <div className="mt-8 space-y-4">
+            {[0, 1].map((i) => (
+              <div key={i} className="h-14 animate-pulse bg-paper-deep" />
+            ))}
+          </div>
+        ) : (purchases.data ?? []).length === 0 ? (
+          <div className="mt-8 border border-dashed border-line bg-paper-deep/40 px-8 py-10 text-center">
+            <Receipt className="mx-auto h-7 w-7 text-ink-faint" />
+            <p className="mt-4 font-display text-xl font-semibold text-ink">
+              Noch keine Käufe
+            </p>
+            <p className="mx-auto mt-2 max-w-md font-body text-[15px] leading-relaxed text-ink-soft">
+              Zahlungen laufen derzeit über Stripe im Testmodus. Ihre Belege
+              erscheinen hier automatisch, sobald der Webhook aktiv ist.
+            </p>
+          </div>
+        ) : (
+          <ul className="mt-6 divide-y divide-line border-b border-line">
+            {(purchases.data ?? []).map((p) => (
+              <li key={p.id} className="flex items-center justify-between gap-6 py-5">
+                <div>
+                  <p className="font-display text-lg font-semibold text-ink">
+                    {tierLabel(p.tier)}
+                  </p>
+                  <p className="mt-1 font-sans text-xs uppercase tracking-[0.12em] text-ink-faint">
+                    {new Date(p.createdAt).toLocaleDateString('de-CH')} ·{' '}
+                    {p.status === 'bezahlt' ? 'Bezahlt' : p.status === 'storniert' ? 'Storniert' : 'Erstattet'}
+                  </p>
+                </div>
+                {p.amount != null && (
+                  <p className="font-body text-[15px] font-semibold text-ink">
+                    {(p.amount / 100).toFixed(2)} {p.currency?.toUpperCase() ?? 'CHF'}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </motion.section>
 
       {/* Entdecken */}

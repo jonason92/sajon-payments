@@ -6,6 +6,7 @@ import ArticleMetered from './pages/ArticleMetered'
 import Leseprobe from './pages/Leseprobe'
 import Abo from './pages/Abo'
 import Konto from './pages/Konto'
+import Danke from './pages/Danke'
 import Login from "./pages/Login"
 import NotFound from "./pages/NotFound"
 
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="leseprobe" element={<Leseprobe />} />
         <Route path="abo" element={<Abo />} />
         <Route path="konto" element={<Konto />} />
+        <Route path="danke" element={<Danke />} />
         <Route path="*" element={<Home />} />
       </Route>
       <Route path="/login" element={<Login />} />
